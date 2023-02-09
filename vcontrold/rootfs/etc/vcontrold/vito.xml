@@ -990,7 +990,7 @@
       </device>
     </command>
     <command name="getBetriebArt" protocmd="getaddr">
-      <addr>2301</addr>
+      <addr>2323</addr>
       <len>1</len>
       <unit>BA</unit>
       <description>Betriebsart</description>
@@ -1002,13 +1002,25 @@
       <unit>BA</unit>
       <description>Betriebsart M2</description>
       <device ID="2053"/>
-    </command>   
+    </command>
+    <command name='getBetriebArtM1' protocmd='getaddr'>
+      <addr>2323</addr>
+      <len>1</len>
+      <unit>BA</unit>
+      <description>Betriebsart M1</description>
+    </command>
     <!--  Betriebsart set  -->
     <command name="setBetriebArtM1" protocmd="setaddr">
       <addr>2301</addr>
       <len>1</len>
       <unit>BA</unit>
       <description>Setze Betriebsart M1</description>
+    </command>
+    <command name="setBetriebArt" protocmd="setaddr">
+      <addr>2323</addr>
+      <len>1</len>
+      <unit>BA</unit>
+      <description>Setze Betriebsart</description>
     </command>
     <!-- SPARBETRIEB (SPARSCHWEIN) -->
     <command name="getBetriebSparM1" protocmd="getaddr">
