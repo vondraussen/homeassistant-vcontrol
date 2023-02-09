@@ -1,8 +1,8 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
-name: Vcontrol add-on
+name: Vcontrol-Testversion add-on
 version: "1.8.3"
 slug: vcontrold
-description: Vcontrol add-on
+description: Vcontrol-Testversion add-on
 url: "https://github.com/Alexandre-io/homeassistant-vcontrol"
 arch:
   - armhf
