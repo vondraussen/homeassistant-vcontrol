@@ -16,6 +16,8 @@ declare request
 declare response
 declare topic
 declare value
+declare ok
+declare attempt
 
 # Ensure required environment variables are set
 if [[ -z "$MQTT_HOST" || -z "$MQTT_PORT" || -z "$MQTT_TOPIC" || -z "$REFRESH_RATE" || -z "$VCONTROL_HOST" || -z "$VCONTROL_PORT" ]]; then
@@ -59,9 +61,18 @@ while true; do
             continue
         fi
 
-        if response=$(timeout --kill-after=5 "${COMMAND_TIMEOUT}" vclient -h "$VCONTROL_HOST" -p "$VCONTROL_PORT" -J -c "${request}") \
-            && jq -e 'type == "array" and length == 1 and .[0].error == ""' <<< "${response}" >/dev/null; then
-            bashio::log.info "Command [${command}] executed successfully."
+        # The first write after an idle period often fails on the Optolink bridge; retry.
+        ok=false
+        for attempt in 1 2 3; do
+            if response=$(timeout --kill-after=5 "${COMMAND_TIMEOUT}" vclient -h "$VCONTROL_HOST" -p "$VCONTROL_PORT" -J -c "${request}") \
+                && jq -e 'type == "array" and length == 1 and .[0].error == ""' <<< "${response}" >/dev/null; then
+                ok=true
+                break
+            fi
+            sleep 2
+        done
+        if [[ "${ok}" == true ]]; then
+            bashio::log.info "Command [${command}] executed successfully (attempt ${attempt})."
         else
             bashio::log.error "Failed to execute command [${command}] with value: ${value}"
         fi
